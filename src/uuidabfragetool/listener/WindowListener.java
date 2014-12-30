@@ -1,9 +1,9 @@
-package uuidabfragetool;
+package uuidabfragetool.listener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MyWindowListener extends WindowAdapter {
+public class WindowListener extends WindowAdapter {
 
     @Override
     public void windowClosing(WindowEvent e) {
