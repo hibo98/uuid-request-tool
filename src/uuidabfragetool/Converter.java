@@ -11,9 +11,10 @@ import uuidabfragetool.listener.ConverterListener;
 public class Converter {
 
     public static Converter instance;
+    private static final String version = "1.1";
     private final JLabel name_label = new JLabel("Username: ");
     private final JLabel uuid_label = new JLabel("UUID: ");
-    private final JFrame converter = new JFrame(" UUID Abfrage Tool by kaenganxt und hibo98 v1.0");
+    private final JFrame converter = new JFrame("UUID Abfrage Tool by kaenganxt und hibo98 v" + version);
     private final JPanel c_panel = new JPanel();
     private final JPanel button_panel = new JPanel();
     private final JPanel uuid_panel = new JPanel();
@@ -35,10 +36,12 @@ public class Converter {
         name_uuid.addActionListener(AL);
         uuid_panel.add(uuid_label);
         uuid_panel.add(uuid_a);
+        uuid_a.addActionListener(AL);
         uuid_panel.add(uuid_copy);
         uuid_copy.addActionListener(AL);
         name_panel.add(name_label);
         name_panel.add(name_a);
+        name_a.addActionListener(AL);
         name_panel.add(name_copy);
         name_copy.addActionListener(AL);
         status_panel.add(status_ta);

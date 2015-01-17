@@ -1,10 +1,12 @@
 package uuidabfragetool;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,6 +15,8 @@ public class API {
 
     private static final Converter con = Converter.instance;
     private static final String PROFILE_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
+    private static final String PAGE_URL = "https://api.mojang.com/profiles/page/1";
+    private static final String AGENT = "minecraft";
     private static final JSONParser jsonParser = new JSONParser();
 
     public static String getNameFromMojang(UUID uuid) throws IOException, ParseException {
@@ -39,8 +43,31 @@ public class API {
         }
     }
 
-    public static UUID getUUIDFromMojang(String username) {
-        return null;
+    public static UUID getUUIDFromMojang(String username) throws IOException, ParseException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(PAGE_URL).openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setUseCaches(false);
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        JSONObject obj = new JSONObject();
+        obj.put("name", username);
+        obj.put("agent", AGENT);
+        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+        writer.write(obj.toJSONString().getBytes());
+        writer.flush();
+        writer.close();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
+        JSONArray array = (JSONArray) jsonObject.get("profiles");
+        Number count = (Number) jsonObject.get("size");
+        if (count.intValue() == 0) {
+            API.setStatus("UUID konnte nicht bei Mojang abgefragt werden!");
+            return null;
+        }
+        JSONObject jsonProfile = (JSONObject) array.get(0);
+        String id = (String) jsonProfile.get("id");
+        UUID uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+        return uuid;
     }
 
     public static String getName() {
