@@ -3,4 +3,5 @@ UUIDAbfrageTool
 
 Das UUIDAbfrageTool dient dazu die UUID eines Minecraft Spielers direkt bei Mojang abzufragen.
 
-Benötigt wir die bukkit.jar
+BenÃ¶tigt wird json-simple Version 1.1.1
+https://code.google.com/p/json-simple/
