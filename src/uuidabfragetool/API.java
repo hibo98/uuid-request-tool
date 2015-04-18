@@ -21,7 +21,6 @@ public class API {
 
     public static String getNameFromMojang(UUID uuid) throws IOException, ParseException {
         HttpURLConnection connection = (HttpURLConnection) new URL(PROFILE_URL + uuid.toString().replace("-", "")).openConnection();
-        System.out.println(connection.getResponseCode());
         if (connection.getResponseCode() == 200) {
             JSONObject response = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
             String name = (String) response.get("name");
@@ -53,11 +52,12 @@ public class API {
         JSONObject obj = new JSONObject();
         obj.put("name", username);
         obj.put("agent", AGENT);
-        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-        writer.write(obj.toJSONString().getBytes());
-        writer.flush();
-        writer.close();
+        try (DataOutputStream writer = new DataOutputStream(connection.getOutputStream())) {
+            writer.write(obj.toJSONString().getBytes());
+            writer.flush();
+        }
         JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
+        connection.disconnect();
         JSONArray array = (JSONArray) jsonObject.get("profiles");
         Number count = (Number) jsonObject.get("size");
         if (count.intValue() == 0) {
@@ -101,5 +101,4 @@ public class API {
     public static void setStatus(String status) {
         con.status_ta.setText("STATUS: " + status);
     }
-
 }

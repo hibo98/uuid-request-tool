@@ -11,7 +11,7 @@ import uuidabfragetool.listener.ConverterListener;
 public class Converter {
 
     public static Converter instance;
-    private static final String version = "1.1";
+    private static final String version = "1.2";
     private final JLabel name_label = new JLabel("Username: ");
     private final JLabel uuid_label = new JLabel("UUID: ");
     private final JFrame converter = new JFrame("UUID Abfrage Tool by kaenganxt und hibo98 v" + version);
@@ -26,7 +26,7 @@ public class Converter {
     public JButton uuid_copy = new JButton("Copy");
     public JTextField name_a = new JTextField(20);
     public JButton name_copy = new JButton("Copy");
-    public JLabel status_ta = new JLabel();
+    public JLabel status_ta = new JLabel("STATUS: " + "Converter Bereit!");
     private final ConverterListener AL = new ConverterListener(this);
 
     public Converter() {
@@ -51,11 +51,10 @@ public class Converter {
         c_panel.add(status_panel);
         converter.add(c_panel);
         converter.addWindowListener(new WindowListener());
-        converter.setSize(450, 200);
+        converter.setSize(500, 200);
         converter.setLocation(200, 200);
         converter.setResizable(false);
         converter.setVisible(true);
-        status_ta.setText("STATUS: " + "Converter Bereit!");
     }
 
     public static void main(String[] args) {

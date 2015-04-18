@@ -5,18 +5,16 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.simple.parser.ParseException;
 import uuidabfragetool.API;
 import uuidabfragetool.Converter;
 
 public class ConverterListener implements ActionListener {
 
-    public Converter con;
+    private final Converter con;
 
     public ConverterListener(Converter converter) {
-        this.con = converter;
+        con = converter;
     }
 
     @Override
@@ -27,7 +25,6 @@ public class ConverterListener implements ActionListener {
                 API.setUUID(API.getUUIDFromMojang(API.getName()));
                 API.setStatus("UUID von " + API.getName() + " wurde bei Mojang abgefragt!");
             } catch (IOException | ParseException ex) {
-                Logger.getLogger(ConverterListener.class.getName()).log(Level.SEVERE, null, ex);
                 API.setStatus("UUID konnte nicht bei Mojang abgefragt werden!");
             }
         } else if (e.getSource() == con.uuid_name) {
@@ -42,7 +39,6 @@ public class ConverterListener implements ActionListener {
                     API.setStatus("Username zur UUID wurde bei Mojang abgefragt!");
                 }
             } catch (IOException | ParseException ex) {
-                Logger.getLogger(ActionListener.class.getName()).log(Level.SEVERE, null, ex);
                 API.setStatus("Username konnte nicht bei Mojang abgefragt werden!");
             }
         } else if (e.getSource() == con.name_copy) {
@@ -55,7 +51,6 @@ public class ConverterListener implements ActionListener {
                 API.setUUID(API.getUUIDFromMojang(API.getName()));
                 API.setStatus("UUID von " + API.getName() + " wurde bei Mojang abgefragt!");
             } catch (IOException | ParseException ex) {
-                Logger.getLogger(ConverterListener.class.getName()).log(Level.SEVERE, null, ex);
                 API.setStatus("UUID konnte nicht bei Mojang abgefragt werden!");
             }
         } else if (e.getSource() == con.uuid_a) {
@@ -70,7 +65,6 @@ public class ConverterListener implements ActionListener {
                     API.setStatus("Username zur UUID wurde bei Mojang abgefragt!");
                 }
             } catch (IOException | ParseException ex) {
-                Logger.getLogger(ActionListener.class.getName()).log(Level.SEVERE, null, ex);
                 API.setStatus("Username konnte nicht bei Mojang abgefragt werden!");
             }
         }
