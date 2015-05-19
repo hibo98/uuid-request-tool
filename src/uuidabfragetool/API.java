@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 public class API {
 
-    private static final Converter con = Converter.instance;
+    private static final Converter con = Converter.getInstance();
     private static final String PROFILE_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final String PAGE_URL = "https://api.mojang.com/profiles/page/1";
     private static final String AGENT = "minecraft";

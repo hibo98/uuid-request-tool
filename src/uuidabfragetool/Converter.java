@@ -10,8 +10,8 @@ import uuidabfragetool.listener.ConverterListener;
 
 public class Converter {
 
-    public static Converter instance;
-    private static final String version = "1.2";
+    private static Converter instance;
+    private static final String version = "1.3";
     private final JLabel name_label = new JLabel("Username: ");
     private final JLabel uuid_label = new JLabel("UUID: ");
     private final JFrame converter = new JFrame("UUID Abfrage Tool by kaenganxt und hibo98 v" + version);
@@ -55,6 +55,10 @@ public class Converter {
         converter.setLocation(200, 200);
         converter.setResizable(false);
         converter.setVisible(true);
+    }
+    
+    public static Converter getInstance() {
+        return instance;
     }
 
     public static void main(String[] args) {
