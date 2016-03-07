@@ -1,7 +1,7 @@
-UUIDAbfrageTool
+Minecraft UUID Request Tool
 ===========
 
-Das UUIDAbfrageTool dient dazu die UUID eines Minecraft Spielers direkt bei Mojang abzufragen.
+The UUID Request Tool allows you to request the UUID from a Minecraft player direct from Mojang
 
-Benötigt wird json-simple Version 1.1.1
+Depends on json-simple version 1.1.1
 https://code.google.com/p/json-simple/

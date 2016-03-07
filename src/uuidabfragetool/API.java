@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
+import java.util.logging.Level;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -31,14 +32,15 @@ public class API {
                 connection.disconnect();
                 return name;
             case 204:
-                Converter.setStatus("Error: Die eingegebene UUID existiert nicht!");
+                Converter.setStatus(Level.SEVERE, "The entered UUID doesn't exists!");
                 connection.disconnect();
                 return null;
             case 429:
-                Converter.setStatus("Error: Zu viele Anfragen innerhalb kurzer Zeit!");
+                Converter.setStatus(Level.SEVERE, "Too many requests!");
                 connection.disconnect();
                 return null;
             default:
+                Converter.setStatus(Level.SEVERE, "An unknown error occurred!");
                 connection.disconnect();
                 return null;
         }
@@ -54,15 +56,15 @@ public class API {
                 UUID uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
                 return uuid;
             case 204:
-                Converter.setStatus("Error: Der eingegebene Username existiert nicht!");
+                Converter.setStatus(Level.SEVERE, "The entered Usernane doesn't exists!");
                 connection.disconnect();
                 return null;
             case 429:
-                Converter.setStatus("Error: Zu viele Anfragen innerhalb kurzer Zeit!");
+                Converter.setStatus(Level.SEVERE, "Too many requests!");
                 connection.disconnect();
                 return null;
             default:
-                Converter.setStatus("Error: Es ist ein unbekannter Fehler aufgetreten!");
+                Converter.setStatus(Level.SEVERE, "An unknown error occurred!");
                 connection.disconnect();
                 return null;
         }
