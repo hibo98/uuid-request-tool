@@ -1,4 +1,4 @@
-package uuidabfragetool;
+package me.hibo98.uuid_request_tool;
 
 import java.awt.Color;
 import java.util.UUID;
@@ -10,13 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import uuidabfragetool.listener.WindowListener;
-import uuidabfragetool.listener.ConverterListener;
 
 public class Converter extends JFrame {
 
     private static Converter instance;
-    private static final String version = "1.5";
+    private static final String version = "1.6";
     private final JLabel name_label = new JLabel("Username: ");
     private final JLabel uuid_label = new JLabel("UUID: ");
     private final JPanel c_panel = new JPanel();
@@ -24,8 +22,8 @@ public class Converter extends JFrame {
     private final JPanel uuid_panel = new JPanel();
     private final JPanel name_panel = new JPanel();
     private final JPanel status_panel = new JPanel();
-    public final JButton uuid_name = new JButton("UUID -> Username");
-    public final JButton name_uuid = new JButton("Username -> UUID");
+    public final JButton uuid_name = new JButton("UUID > Username");
+    public final JButton name_uuid = new JButton("Username > UUID");
     public final JTextField uuid_a = new JTextField(23);
     public final JButton uuid_copy = new JButton("Copy");
     public final JTextField name_a = new JTextField(20);
@@ -63,7 +61,7 @@ public class Converter extends JFrame {
         c_panel.add(name_panel);
         c_panel.add(status_panel);
         super.add(c_panel);
-        super.addWindowListener(new WindowListener());
+        super.setDefaultCloseOperation(EXIT_ON_CLOSE);
         super.setSize(450, 200);
         super.setLocation(200, 200);
         super.setResizable(false);

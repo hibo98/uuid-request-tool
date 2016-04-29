@@ -1,4 +1,4 @@
-package uuidabfragetool.listener;
+package me.hibo98.uuid_request_tool;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Level;
 import org.json.simple.parser.ParseException;
-import uuidabfragetool.API;
-import uuidabfragetool.Converter;
 
 public class ConverterListener implements ActionListener {
 
@@ -28,11 +26,9 @@ public class ConverterListener implements ActionListener {
             }
             Converter.resetUUID();
             try {
-                UUID uuid = API.getUUIDFromMojang(Converter.getUsername());
-                if (uuid != null) {
+                API.getUUIDFromMojang(Converter.getUsername(), (UUID uuid) -> {
                     Converter.setUUID(uuid);
-                    Converter.setStatus(Level.FINE, "UUID was successfully requested from Mojang!");
-                }
+                });
             } catch (IOException | ParseException ex) {
                 Converter.setStatus(Level.SEVERE, "An unknown error occurred!");
             }
@@ -43,11 +39,9 @@ public class ConverterListener implements ActionListener {
             }
             Converter.resetUsername();
             try {
-                String name = API.getNameFromMojang(Converter.getUUID());
-                if (name != null) {
+                API.getNameFromMojang(Converter.getUUID(), (String name) -> {
                     Converter.setUsername(name);
-                    Converter.setStatus(Level.FINE, "Username was successfully requested from Mojang!");
-                }
+                });
             } catch (IOException | ParseException ex) {
                 Converter.setStatus(Level.SEVERE, "An unknown error occurred!");
             } catch (IllegalArgumentException ex) {
