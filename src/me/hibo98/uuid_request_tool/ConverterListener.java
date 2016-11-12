@@ -2,8 +2,8 @@ package me.hibo98.uuid_request_tool;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -20,7 +20,7 @@ public class ConverterListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == con.name_uuid || e.getSource() == con.name_a) {
-            if (Converter.getUsername() == null || Converter.getUsername().equals("")) {
+            if (Converter.getUsername() == null || Converter.getUsername().isEmpty()) {
                 Converter.setStatus(Level.SEVERE, "You must enter a Username!");
                 return;
             }
@@ -33,7 +33,7 @@ public class ConverterListener implements ActionListener {
                 Converter.setStatus(Level.SEVERE, "An unknown error occurred!");
             }
         } else if (e.getSource() == con.uuid_name || e.getSource() == con.uuid_a) {
-            if (Converter.getUUIDString() == null || Converter.getUUIDString().equals("")) {
+            if (Converter.getUUIDString() == null || Converter.getUUIDString().isEmpty()) {
                 Converter.setStatus(Level.SEVERE, "You must enter a UUID!");
                 return;
             }
