@@ -1,121 +1,141 @@
 package me.hibo98.uuid_request_tool;
 
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.DataFormat;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
-public class Converter extends JFrame {
+public class Converter extends Application {
 
-    private static Converter instance;
-    private static final String version = "1.7";
-    private final JPanel c_panel = new JPanel();
-    private final JPanel button_panel = new JPanel();
-    private final JPanel uuid_panel = new JPanel();
-    private final JPanel name_panel = new JPanel();
-    public final JButton uuid_name = new JButton("UUID > Username");
-    public final JButton name_uuid = new JButton("Username > UUID");
-    public final JTextField uuid = new JTextField(23);
-    private final JButton uuid_copy = new JButton("Copy");
-    public final JTextField name = new JTextField(20);
-    private final JButton name_copy = new JButton("Copy");
-    private final JLabel status = new JLabel("STATUS: " + "Converter ready!");
-    private final ConverterListener AL = new ConverterListener(this);
+    private static final String version = "2.0";
+    private final Button uuid_name = new Button("UUID > Username");
+    private final Button name_uuid = new Button("Username > UUID");
+    private final TextField uuid = new TextField();
+    private final Button uuid_copy = new Button("Copy");
+    private final TextField name = new TextField();
+    private final Button name_copy = new Button("Copy");
+    private final Label status = new Label("STATUS: Converter ready!");
 
-    public Converter() {
-        super("Minecraft UUID Request Tool by hibo98 v" + version);
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            try {
-                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex1) {
-            }
-        }
-        button_panel.add(uuid_name);
-        uuid_name.addActionListener(AL);
-        button_panel.add(name_uuid);
-        name_uuid.addActionListener(AL);
-        uuid_panel.add(new JLabel("UUID: "));
-        uuid_panel.add(uuid);
-        uuid.addActionListener(AL);
-        uuid_panel.add(uuid_copy);
-        uuid_copy.addActionListener((ae) -> {
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(getUUIDString()), null);
+    @Override
+    public void start(Stage stage) {
+        BorderPane bp = new BorderPane();
+        GridPane gp = new GridPane();
+        gp.setPadding(new Insets(15));
+        gp.setHgap(15);
+        gp.setVgap(15);
+        gp.add(new HBox(25, uuid_name, name_uuid), 1, 0);
+        gp.add(new Label("UUID:"), 0, 1);
+        gp.add(uuid, 1, 1);
+        uuid.setMinWidth(250);
+        uuid.setOnAction(new UUIDEvent());
+        uuid_name.setOnAction(new UUIDEvent());
+        gp.add(uuid_copy, 2, 1);
+        gp.add(new Label("Username:"), 0, 2);
+        gp.add(name, 1, 2);
+        name.setMinWidth(250);
+        name.setOnAction(new UsernameEvent());
+        name_uuid.setOnAction(new UsernameEvent());
+        gp.add(name_copy, 2, 2);
+        gp.add(new StackPane(status), 0, 3, 3, 1);
+        uuid_copy.setOnAction((ae) -> {
+            HashMap<DataFormat, Object> map = new HashMap<>();
+            map.put(DataFormat.PLAIN_TEXT, uuid.getText());
+            Clipboard.getSystemClipboard().setContent(map);
         });
-        name_panel.add(new JLabel("Username: "));
-        name_panel.add(name);
-        name.addActionListener(AL);
-        name_panel.add(name_copy);
-        name_copy.addActionListener((ae) -> {
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(getUsername()), null);
+        name_copy.setOnAction((ae) -> {
+            HashMap<DataFormat, Object> map = new HashMap<>();
+            map.put(DataFormat.PLAIN_TEXT, name.getText());
+            Clipboard.getSystemClipboard().setContent(map);
         });
-        c_panel.add(button_panel);
-        c_panel.add(uuid_panel);
-        c_panel.add(name_panel);
-        c_panel.add(status);
-        super.add(c_panel);
-        super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        super.setSize(450, 200);
-        super.setLocation(200, 200);
-        super.setResizable(false);
-        super.setVisible(true);
-    }
-
-    public String getUsername() {
-        return name.getText();
+        bp.setCenter(gp);
+        stage.setScene(new Scene(bp));
+        stage.setTitle("Minecraft UUID Request Tool " + version);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void setStatus(Level level, String msg) {
         if (level.equals(Level.SEVERE)) {
-            status.setForeground(new Color(139, 0, 0));
+            status.setTextFill(Color.web("#8B0000"));
         } else if (level.equals(Level.WARNING)) {
-            status.setForeground(new Color(128, 128, 0));
+            status.setTextFill(Color.web("#808000"));
         } else if (level.equals(Level.FINE)) {
-            status.setForeground(new Color(0, 100, 0));
+            status.setTextFill(Color.web("#006400"));
         } else {
-            status.setForeground(Color.black);
+            status.setTextFill(Color.BLACK);
         }
         status.setText("STATUS: " + msg);
-    }
-
-    public void setUUID(UUID uuid) {
-        this.uuid.setText(uuid.toString());
     }
 
     public void resetUUID() {
         uuid.setText("");
     }
 
-    public UUID getUUID() throws IllegalArgumentException {
-        return UUID.fromString(uuid.getText());
+    public UUID getUUID() {
+        try {
+            return UUID.fromString(uuid.getText());
+        } catch (IllegalArgumentException ex) {
+            setStatus(Level.SEVERE, "You entred no valid UUID!");
+        }
+        return null;
     }
 
     public void resetUsername() {
         name.setText("");
     }
 
-    public String getUUIDString() {
-        return uuid.getText();
-    }
-
-    public void setUsername(String username) {
-        name.setText(username);
-    }
-
-    public static Converter getInstance() {
-        return instance;
-    }
-
     public static void main(String[] args) {
-        instance = new Converter();
+        launch(args);
+    }
+
+    public class UUIDEvent implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent t) {
+            if (uuid.getText().isEmpty()) {
+                setStatus(Level.SEVERE, "You must enter a UUID!");
+                return;
+            }
+            resetUsername();
+            UUID u = getUUID();
+            if (u == null) {
+                return;
+            }
+            new MojangTask().run(u.toString(), true, (response) -> {
+                name.setText(response.getUsername());
+                setStatus(response.getStatus(), response.getMsg());
+            });
+        }
+    }
+    
+    public class UsernameEvent implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent t) {
+            if (name.getText().isEmpty()) {
+                setStatus(Level.SEVERE, "You must enter a Username!");
+                return;
+            }
+            resetUUID();
+            new MojangTask().run(name.getText(), false, (response) -> {
+                uuid.setText(response.getUuid().toString());
+                setStatus(response.getStatus(), response.getMsg());
+            });
+        }
     }
 }
