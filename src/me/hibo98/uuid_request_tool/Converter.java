@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -33,7 +32,6 @@ public class Converter extends Application {
 
     @Override
     public void start(Stage stage) {
-        BorderPane bp = new BorderPane();
         GridPane gp = new GridPane();
         gp.setPadding(new Insets(15));
         gp.setHgap(15);
@@ -62,8 +60,7 @@ public class Converter extends Application {
             map.put(DataFormat.PLAIN_TEXT, name.getText());
             Clipboard.getSystemClipboard().setContent(map);
         });
-        bp.setCenter(gp);
-        stage.setScene(new Scene(bp));
+        stage.setScene(new Scene(gp));
         stage.setTitle("Minecraft UUID Request Tool " + version);
         stage.setResizable(false);
         stage.show();
